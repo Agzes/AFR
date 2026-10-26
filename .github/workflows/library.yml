@@ -1,0 +1,86 @@
+name: Sync library
+
+on:
+  pull_request:
+    paths:
+      - "web/api/configs/**"
+      - "scripts/sync_library.py"
+      - ".github/workflows/library.yml"
+  push:
+    branches: [main]
+    paths:
+      - "web/api/configs/**"
+      - "scripts/sync_library.py"
+      - ".github/workflows/library.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: library-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync library catalog
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - name: Check catalog
+        if: github.event_name == 'pull_request' || github.ref != 'refs/heads/main'
+        run: python3 scripts/sync_library.py --check
+
+      - name: Sync catalog
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        id: sync
+        run: |
+          python3 scripts/sync_library.py --write
+          if [ -n "$(git status --porcelain -- web/api/configs/library.json)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open pull request
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && steps.sync.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH="library/sync"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add web/api/configs/library.json
+          git commit -m "Sync config library"
+          git push --force origin "$BRANCH"
+
+          OPEN=$(gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
+            --head "$BRANCH" \
+            --state open \
+            --json number \
+            --jq 'length')
+          if ! [[ "$OPEN" =~ ^[0-9]+$ ]]; then
+            echo "failed to list pull requests" >&2
+            exit 1
+          fi
+          if [ "$OPEN" -eq 0 ]; then
+            gh pr create \
+              --repo "$GITHUB_REPOSITORY" \
+              --base main \
+              --head "$BRANCH" \
+              --title "Sync config library" \
+              --body "Regenerated \`web/api/configs/library.json\` from the config folders. The catalog was validated by \`scripts/sync_library.py\`. Merging this PR publishes the site via \`pages.yml\`."
+          fi

@@ -1,0 +1,25 @@
+name: ❓ Вопрос
+description: Задать вопрос о моде
+title: "[Question]: "
+labels: ["question"]
+assignees:
+  - agzes
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Нужна помощь?
+  - type: textarea
+    id: question
+    attributes:
+      label: Вопрос
+      placeholder: Что вы хотите узнать?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Контекст
+      placeholder: Детали, конфиг, скриншоты
+    validations:
+      required: false

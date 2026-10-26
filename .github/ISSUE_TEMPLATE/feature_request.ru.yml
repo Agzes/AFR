@@ -1,0 +1,39 @@
+name: 💡 Идея
+description: Предложить функцию или улучшение
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees:
+  - agzes
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Спасибо за идею!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Задача
+      placeholder: Что неудобно или чего не хватает?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Предлагаемое решение
+      placeholder: Как это должно работать?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Альтернативы
+      placeholder: Другие способы решения?
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Дополнительно
+      placeholder: Скриншоты, примеры, ссылки
+    validations:
+      required: false

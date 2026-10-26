@@ -1,0 +1,25 @@
+name: ❓ Question
+description: Ask a question about the mod
+title: "[Question]: "
+labels: ["question"]
+assignees:
+  - agzes
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Need help?
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      placeholder: What would you like to ask or clarify?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      placeholder: Any details, config or screenshots
+    validations:
+      required: false

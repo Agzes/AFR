@@ -1,0 +1,39 @@
+name: 💡 Feature request
+description: Propose a new feature or improvement
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees:
+  - agzes
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thank you for suggesting a new feature!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      placeholder: What is inconvenient or missing?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      placeholder: How should it work?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      placeholder: Any other ways to solve this?
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Extra context
+      placeholder: Screenshots, examples, links
+    validations:
+      required: false
