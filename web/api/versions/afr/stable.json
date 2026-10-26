@@ -1,0 +1,8 @@
+{
+  "version": "1.0.0",
+  "version_code": 10000,
+  "release_date": "2026-10-25",
+  "release_name": "1.0.0",
+  "changelog": ["Первый публичный релиз."],
+  "is_beta": false
+}
