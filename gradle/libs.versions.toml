@@ -1,0 +1,14 @@
+[versions]
+minecraft = "1.20.4"
+loader = "0.14.23"
+loom = "1.18.4"
+fabric-api = "0.91.1+1.20.4"
+owo = "0.12.6+1.20.3"
+
+[libraries]
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "loader" }
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
+owo-lib = { module = "io.wispforest:owo-lib", version.ref = "owo" }
+
+[plugins]
+fabric-loom = { id = "net.fabricmc.fabric-loom-remap", version.ref = "loom" }
