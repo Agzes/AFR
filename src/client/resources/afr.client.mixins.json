@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "io.github.agzes.afr.client.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": ["KeyboardMixin", "KeyboardHandlerInvoker"],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

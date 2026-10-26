@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "afr",
+  "version": "${version}",
+  "name": "AFR",
+  "description": "AFR - a mod for automating role-play actions.",
+  "authors": ["Agzes"],
+  "contact": {
+    "homepage": "https://agzes.github.io/AFR/",
+    "sources": "https://github.com/Agzes/AFR",
+    "issues": "https://github.com/Agzes/AFR/issues"
+  },
+  "license": "GPL-3.0-only",
+  "icon": "assets/afr/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": ["io.github.agzes.afr.AFR"],
+    "client": ["io.github.agzes.afr.client.AfrClient"]
+  },
+  "mixins": [
+    {
+      "config": "afr.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.23",
+    "minecraft": "~1.20.4",
+    "java": ">=17",
+    "fabric-api": ">=0.91.1",
+    "owo": ">=0.12.6"
+  },
+  "recommends": {
+    "modmenu": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://agzes.github.io/go/to/discord"
+      }
+    }
+  }
+}

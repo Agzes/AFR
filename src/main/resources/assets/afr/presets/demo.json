@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "Label": "AFR Demo",
+    "RevName": "afr-demo",
+    "Version": "1.0.0",
+    "VersionCode": 10000,
+    "MinAFRVersion": 10000,
+    "Author": "Agzes",
+    "Authors": ["Agzes"],
+    "Editors": [],
+    "Description": "Пример профиля: показывает возможности движка отыгровок.",
+    "Tags": ["demo", "туториал", "движок"]
+  },
+  "profile_settings": {
+    "Menu": "F9",
+    "ForceStop": "Insert",
+    "Restart": "F10",
+    "s100_250_timings": [100, 250],
+    "s300_800_timings": [300, 500, 700, 800],
+    "s1000_4000_timings": [1000, 2000, 3000, 4000],
+    "multiplier": 1.0
+  },
+  "parameters": [
+    {
+      "id": "greeting",
+      "label": "Приветствие",
+      "param_type": "text",
+      "value": "Здравствуйте",
+      "default": "Здравствуйте"
+    },
+    {
+      "id": "price",
+      "label": "Цена услуги",
+      "param_type": "number",
+      "value": 250,
+      "default": 250
+    },
+    {
+      "id": "polite",
+      "label": "Вежливая форма (да/нет)",
+      "param_type": "text",
+      "value": "да",
+      "default": "да"
+    },
+    {
+      "id": "mood",
+      "label": "Настроение",
+      "param_type": "text",
+      "value": "спокойно",
+      "default": "спокойно"
+    }
+  ],
+  "rp_actions": {
+    "DemoGreeting": {
+      "name": "Приветствие (переменные)",
+      "bind": "",
+      "description": "Показывает {Name}, {Role} и рандом {A|B|C}.",
+      "category": "Общение",
+      "icon": "minecraft:paper",
+      "priority": 0,
+      "cooldown": 3000,
+      "favorite": true,
+      "steps": [
+        [
+          "RPAction",
+          "Send",
+          "S300",
+          "S300",
+          "/me поприветствовал {Name}, {Role}"
+        ]
+      ]
+    },
+    "DemoGendered": {
+      "name": "Гендерный текст",
+      "bind": "",
+      "description": "Разный текст для мужского и женского персонажа.",
+      "category": "Общение",
+      "icon": "minecraft:book",
+      "priority": 0,
+      "cooldown": 0,
+      "favorite": false,
+      "steps": [
+        [
+          "RPActionGender",
+          "Send",
+          "S300",
+          "S500",
+          "/me сказал: я готов помочь.",
+          "/me сказала: я готова помочь."
+        ]
+      ]
+    },
+    "DemoParams": {
+      "name": "Параметры профиля",
+      "bind": "",
+      "description": "Подставляет значения параметров профиля.",
+      "category": "Параметры",
+      "icon": "minecraft:diamond",
+      "priority": 0,
+      "cooldown": 0,
+      "favorite": false,
+      "steps": [
+        [
+          "RPAction",
+          "Send",
+          "S100",
+          "S300",
+          "/me начал с фразы: {Param:greeting}"
+        ],
+        [
+          "RPAction",
+          "Send",
+          "S300",
+          "S300",
+          "/me цена: {Param:price}, настроение: {Param:mood}, вежливо: {Param:polite}"
+        ]
+      ]
+    },
+    "DemoRandom": {
+      "name": "Случайный вариант",
+      "bind": "",
+      "description": "Каждый раз выбирается один из вариантов {A|B|C}.",
+      "category": "Общение",
+      "icon": "minecraft:redstone",
+      "priority": 0,
+      "cooldown": 0,
+      "favorite": false,
+      "steps": [
+        [
+          "RPAction",
+          "Send",
+          "S300",
+          "S300",
+          "/me {проверил|осмотрел|изучил} документы и {кивнул|улыбнулся}"
+        ]
+      ]
+    },
+    "DemoInput": {
+      "name": "Метод «Ввод»",
+      "bind": "",
+      "description": "Открывает строку чата с уже вписанным текстом (не отправляет).",
+      "category": "Метод",
+      "icon": "minecraft:writable_book",
+      "priority": 0,
+      "cooldown": 0,
+      "favorite": false,
+      "steps": [
+        [
+          "RPAction",
+          "Input",
+          "S100",
+          "S100",
+          "текст для ручного редактирования"
+        ]
+      ]
+    },
+    "DemoDelays": {
+      "name": "Задержки S-кодов",
+      "bind": "",
+      "description": "Три шага с разными задержками «до» и «после».",
+      "category": "Движок",
+      "icon": "minecraft:clock",
+      "priority": 0,
+      "cooldown": 0,
+      "favorite": false,
+      "steps": [
+        ["RPAction", "Send", "S1000", "S300", "/me шаг 1 (задержка до: S1000)"],
+        [
+          "RPAction",
+          "Send",
+          "S300",
+          "S500",
+          "/me шаг 2 (задержка после: S500)"
+        ],
+        [
+          "RPAction",
+          "Send",
+          "S300",
+          "S1000",
+          "/me шаг 3 (задержка после: S1000)"
+        ]
+      ]
+    },
+    "DemoKeys": {
+      "name": "Служебные клавиши",
+      "bind": "",
+      "description": "Специальные клавиши в тексте вырезаются (совместимость).",
+      "category": "Движок",
+      "icon": "minecraft:lever",
+      "priority": 0,
+      "cooldown": 0,
+      "favorite": false,
+      "steps": [
+        [
+          "RPAction",
+          "Send",
+          "S100",
+          "S300",
+          "/me текст со спец-клавишами {Tab} {Space} {Left}{Right}"
+        ]
+      ]
+    }
+  },
+  "misc": {},
+  "announcements": [],
+  "quick_action_windows": [
+    {
+      "id": "main",
+      "name": "Demo • Main",
+      "bind": "UI_Main",
+      "style": "list",
+      "tileCols": 6,
+      "actions": [
+        "DemoGreeting",
+        "DemoGendered",
+        "DemoParams",
+        "DemoRandom",
+        "DemoInput",
+        "DemoDelays",
+        "DemoKeys"
+      ],
+      "tiles": []
+    },
+    {
+      "id": "demo-tiles",
+      "name": "Demo • Tiles",
+      "bind": "UI_Rare",
+      "style": "tiles",
+      "tileCols": 4,
+      "actions": ["DemoGreeting", "DemoParams", "DemoRandom", "DemoInput"],
+      "tiles": [
+        "DemoGreeting",
+        "DemoGendered",
+        "DemoParams",
+        "DemoRandom",
+        "",
+        "",
+        "DemoInput",
+        "DemoDelays"
+      ]
+    },
+    {
+      "id": "demo-radial",
+      "name": "Demo • Radial",
+      "bind": "UI_Educ",
+      "style": "radial",
+      "tileCols": 6,
+      "actions": [
+        "DemoGreeting",
+        "DemoGendered",
+        "DemoParams",
+        "DemoRandom",
+        "DemoInput",
+        "DemoDelays"
+      ],
+      "tiles": []
+    }
+  ]
+}
