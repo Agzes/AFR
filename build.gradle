@@ -44,8 +44,14 @@ tasks.withType(JavaCompile).configureEach {
 
 java {
 	withSourcesJar()
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+}
+
+def gameJavaLauncher = javaToolchains.launcherFor {
+	languageVersion = JavaLanguageVersion.of(21)
+}
+
+tasks.matching { it.name == 'runClient' || it.name == 'runServer' }.configureEach {
+	javaLauncher.set(gameJavaLauncher)
 }
 
 jar {

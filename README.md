@@ -66,7 +66,7 @@ All binds are changed in the settings.
 ./gradlew runClient      # launch a test client
 ```
 
-Requires JDK 25+ (the mod targets Java 17).
+Requires JDK 25+ to run Gradle/Loom and JDK 21 for the test client (the mod itself targets Java 17).
 
 Dependencies are checked against `gradle/verification-metadata.xml`; the Gradle wrapper distribution is pinned by SHA-256. If a dependency is intentionally updated and verification fails, refresh the metadata:
 
