@@ -1,0 +1,11 @@
+{
+  "icon": "minecraft:golden_apple",
+  "created_at": "2026-10-29",
+  "updated_at": "2026-10-29",
+  "versions": {
+    "1.0.0": {
+      "date": "2026-10-29",
+      "changelog": ["Импортировано с актуальной версии AHK-FOR-RPM/Hospital"]
+    }
+  }
+}
