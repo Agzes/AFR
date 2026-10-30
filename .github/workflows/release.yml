@@ -54,6 +54,102 @@ jobs:
           (cd build/libs && sha256sum "$(basename "$JAR")" > SHA256SUMS.txt)
           echo "JAR=$JAR" >> "$GITHUB_ENV"
 
+      - name: Prepare release notes
+        env:
+          REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, re, sys
+
+          version = next(
+              line.split("=", 1)[1].strip()
+              for line in pathlib.Path("gradle.properties").read_text(encoding="utf-8").splitlines()
+              if line.startswith("version=")
+          )
+
+          def section(path):
+              text = pathlib.Path(path).read_text(encoding="utf-8")
+              match = re.search(
+                  r"^## \[" + re.escape(version) + r"\][^\n]*\n(.*?)(?=^## \[|\Z)",
+                  text,
+                  re.MULTILINE | re.DOTALL,
+              )
+              return match.group(1).strip() if match else ""
+
+          en = section("CHANGELOG.md")
+          ru = section("CHANGELOG.ru.md")
+          missing = [
+              name
+              for name, body in (("CHANGELOG.md", en), ("CHANGELOG.ru.md", ru))
+              if not body
+          ]
+          if missing:
+              print("No [%s] section in: %s" % (version, ", ".join(missing)))
+              sys.exit(1)
+
+          mod = json.loads(
+              pathlib.Path("src/main/resources/fabric.mod.json").read_text(encoding="utf-8")
+          )
+          depends = mod.get("depends") or {}
+
+          def floor(value):
+              value = str(value).strip()
+              for prefix in (">=", ">", "^"):
+                  if value.startswith(prefix):
+                      return value[len(prefix):].strip() + "+"
+              if value.startswith("~"):
+                  return value[1:].strip()
+              return value
+
+          requirements = [
+              (name, key, floor(depends.get(key, "")))
+              for name, key in (
+                  ("Minecraft", "minecraft"),
+                  ("Fabric Loader", "fabricloader"),
+                  ("Fabric API", "fabric-api"),
+                  ("owo-lib", "owo"),
+                  ("Java", "java"),
+              )
+              if depends.get(key)
+          ]
+
+          links = {
+              "owo": " ([Modrinth](https://modrinth.com/mod/owo-lib) • "
+              "[CurseForge](https://www.curseforge.com/minecraft/mc-mods/owo-lib) • "
+              "[GitHub](https://github.com/wisp-forest/owo-lib))",
+          }
+
+          lines = ["## Requirements / Требования", ""]
+          lines += [
+              "- %s **%s**%s" % (name, value, links.get(key, ""))
+              for name, key, value in requirements
+          ]
+          lines += [
+              "",
+              "<details>",
+              "<summary><b>Changelog (English)</b></summary>",
+              "",
+              en,
+              "",
+              "</details>",
+              "",
+              "<details>",
+              "<summary><b>Changelog (Русский)</b></summary>",
+              "",
+              ru,
+              "",
+              "</details>",
+              "",
+              "**Full Changelog**: https://github.com/%s/commits/%s"
+              % (os.environ["REPO"], os.environ["TAG"]),
+              "",
+          ]
+          pathlib.Path("build/release-notes.md").write_text(
+              "\n".join(lines), encoding="utf-8"
+          )
+          PY
+
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -65,5 +161,5 @@ jobs:
           gh release create "${GITHUB_REF_NAME}" "$JAR" build/libs/SHA256SUMS.txt \
             --repo "$GITHUB_REPOSITORY" \
             --title "${GITHUB_REF_NAME}" \
-            --generate-notes \
+            --notes-file build/release-notes.md \
             "${ARGS[@]}"
