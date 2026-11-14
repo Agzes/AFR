@@ -52,7 +52,7 @@ python3 scripts/sync_library.py --check
 
 ## > Deploy
 
-The workflow `.github/workflows/pages.yml` publishes `web/` to the `pages` branch on every push to `main`. The mod's default API base is `https://agzes.github.io/AFR/api`.
+The workflow `.github/workflows/pages.yml` builds and deploys `web/` directly to GitHub Pages on every push to `main`, without a separate branch. The mod's default API base is `https://agzes.github.io/AFR/api`.
 
 The site is static, nothing else needs to be deployed.
 

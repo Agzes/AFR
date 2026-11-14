@@ -52,7 +52,7 @@ python3 scripts/sync_library.py --check
 
 ## > Деплой
 
-Workflow `.github/workflows/pages.yml` публикует `web/` в ветку `pages` при каждом пуше в `main`. Базовый адрес API мода по умолчанию - `https://agzes.github.io/AFR/api`.
+Workflow `.github/workflows/pages.yml` собирает и публикует `web/` напрямую в GitHub Pages при каждом пуше в `main`, без отдельной ветки. Базовый адрес API мода по умолчанию - `https://agzes.github.io/AFR/api`.
 
 Сайт статичный, дополнительно разворачивать ничего не нужно.
 
